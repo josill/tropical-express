@@ -48,9 +48,11 @@ public class FruitWeightProfile : ValueObject<FruitWeightProfile>
     /// <exception cref="InconsistentWeightUnitsException">Thrown when net weight and tare weight use different units.</exception>
     private static void Validate(NetWeight netWeight, TareWeight tareWeight)
     {
-        Guard.Against.Requires<InconsistentWeightUnitsException>(netWeight.Weight.Unit != tareWeight.Weight.Unit);
+        Guard.Against.Requires<InconsistentWeightUnitsException>(netWeight.Weight.WeightUnit != tareWeight.Weight.WeightUnit);
     }
-
+    
+    // TODO: ToString() and FromString()
+    
     /// <summary>
     /// Provides the components of this object used for equality comparison.
     /// </summary>

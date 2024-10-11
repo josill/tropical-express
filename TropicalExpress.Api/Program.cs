@@ -1,5 +1,6 @@
 ﻿using TropicalExpress.Infrastructure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,18 +23,33 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.EnsureCreated();
 
     // testing area
-    var fruitWeight = new Weight(1, Unit.Kilograms);
-    var packageWeight = new Weight(200, Unit.Grams);
-    var frp = new FruitWeightProfile(new NetWeight(fruitWeight), new TareWeight(packageWeight));
-    var fruit = new Fruit(frp);
+    Console.WriteLine("\nTesting Database Operations:");
+
+    // Create and save a new Fruit
+    var netWeight = new Weight(10.5m, WeightUnit.Kilograms);
+    var tareWeight = new Weight(0.5m, WeightUnit.Kilograms);
+    var fruitWeightProfile = new FruitWeightProfile(new NetWeight(netWeight), new TareWeight(tareWeight));
+    var fruit = new Fruit(fruitWeightProfile);
+
     dbContext.Fruits.Add(fruit);
     await dbContext.SaveChangesAsync();
 
-    var retrievedFruit = dbContext.Fruits.FirstOrDefault();
-    Console.WriteLine(retrievedFruit.FruitWeightProfile.NetWeight.Weight.Value);
-    Console.WriteLine(retrievedFruit.FruitWeightProfile.NetWeight.Weight.Unit);
-    Console.WriteLine(retrievedFruit.FruitWeightProfile.TareWeight.Weight.Unit);
-    Console.WriteLine(retrievedFruit.FruitWeightProfile.TareWeight.Weight.Unit);
+    Console.WriteLine("Fruit saved to database.");
+
+    // Retrieve the Fruit
+    var retrievedFruit = await dbContext.Fruits.FirstOrDefaultAsync();
+    if (retrievedFruit != null)
+    {
+        Console.WriteLine("Retrieved Fruit from database:");
+        Console.WriteLine($"Weight Profile: {retrievedFruit.FruitWeightProfile}");
+        Console.WriteLine($"Net Weight: {retrievedFruit.FruitWeightProfile.NetWeight}");
+        Console.WriteLine($"Tare Weight: {retrievedFruit.FruitWeightProfile.TareWeight}");
+        Console.WriteLine($"Gross Weight: {retrievedFruit.FruitWeightProfile.GrossWeight}");
+    }
+    else
+    {
+        Console.WriteLine("No Fruit found in database.");
+    }
 }
 
 

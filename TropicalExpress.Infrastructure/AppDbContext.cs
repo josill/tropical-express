@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using TropicalExpress.Domain;
 
@@ -11,24 +12,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     {
         modelBuilder.Entity<Fruit>(builder =>
         {
-            builder.Property(fruit => fruit.Id)
+            builder.Property(x => x.Id)
                 .HasConversion(
                     id => id.Value,
                     value => new FruitId(value)
                 )
                 .IsRequired();
-            
-            builder.ComplexProperty(
-                fruit => fruit.FruitWeightProfile,
-                builder =>
-                {
-                    builder.ComplexProperty(fruit => fruit.NetWeight);
-                    builder.ComplexProperty(fruit => fruit.TareWeight);
-                    builder.ComplexProperty(fruit => fruit.GrossWeight);
-                });
-            {
-                
-            }
+        });
+        
+        modelBuilder.Entity<Fruit>(entity =>
+        {
+            entity.Property(f => f.FruitWeightProfile)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => FruitWeightProfile.FromString(v)
+                )
+                .HasColumnName("WeightProfile");
         });
         
         base.OnModelCreating(modelBuilder);
