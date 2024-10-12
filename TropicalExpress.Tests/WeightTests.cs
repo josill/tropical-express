@@ -18,7 +18,7 @@ public class WeightTests
     {
         var weight = new Weight(10.5m, WeightUnit.Kilograms);
         Assert.Equal(10.5m, weight.Value);
-        Assert.Equal(WeightUnit.Kilograms, weight.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, weight.Unit);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class WeightTests
         var convertedWeight = Weight.ConvertToUnitWithTwoDecimalPlaces(initialWeight, targetWeightUnit);
         _output.WriteLine(initialWeight.Value.ToString());
         _output.WriteLine(convertedWeight.Value.ToString());
-        Assert.Equal(targetWeightUnit, convertedWeight.WeightUnit);
+        Assert.Equal(targetWeightUnit, convertedWeight.Unit);
         Assert.Equal(expectedValue, convertedWeight.Value);
     }
 
@@ -89,7 +89,7 @@ public class WeightTests
     {
         var weight = Weight.FromGrams(500m);
         Assert.Equal(500m, weight.Value);
-        Assert.Equal(WeightUnit.Grams, weight.WeightUnit);
+        Assert.Equal(WeightUnit.Grams, weight.Unit);
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class WeightTests
     {
         var weight = Weight.FromKilograms(2.5m);
         Assert.Equal(2.5m, weight.Value);
-        Assert.Equal(WeightUnit.Kilograms, weight.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, weight.Unit);
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class WeightTests
     {
         var weight = Weight.FromPounds(3.3m);
         Assert.Equal(3.3m, weight.Value);
-        Assert.Equal(WeightUnit.Pounds, weight.WeightUnit);
+        Assert.Equal(WeightUnit.Pounds, weight.Unit);
     }
 
     [Fact]
@@ -115,7 +115,7 @@ public class WeightTests
         var weight2 = new Weight(3m, WeightUnit.Kilograms);
         var result = weight1.Add(weight2);
         Assert.Equal(5m, result.Value);
-        Assert.Equal(WeightUnit.Kilograms, result.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, result.Unit);
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class WeightTests
         var weight2 = new Weight(500m, WeightUnit.Grams);
         var result = weight1.Add(weight2);
         Assert.Equal(1.5m, result.Value);
-        Assert.Equal(WeightUnit.Kilograms, result.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, result.Unit);
     }
 
     [Fact]
@@ -135,7 +135,7 @@ public class WeightTests
         var weight2 = new Weight(2m, WeightUnit.Kilograms);
         var result = weight1.Subtract(weight2);
         Assert.Equal(3m, result.Value);
-        Assert.Equal(WeightUnit.Kilograms, result.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, result.Unit);
     }
 
     [Fact]
@@ -145,7 +145,7 @@ public class WeightTests
         var weight2 = new Weight(500m, WeightUnit.Grams);
         var result = weight1.Subtract(weight2);
         Assert.Equal(1.5m, result.Value);
-        Assert.Equal(WeightUnit.Kilograms, result.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, result.Unit);
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class WeightTests
         var weight2 = new Weight(3m, WeightUnit.Kilograms);
         var result = weight1 + weight2;
         Assert.Equal(5m, result.Value);
-        Assert.Equal(WeightUnit.Kilograms, result.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, result.Unit);
     }
 
     [Fact]
@@ -165,7 +165,7 @@ public class WeightTests
         var weight2 = new Weight(2m, WeightUnit.Kilograms);
         var result = weight1 - weight2;
         Assert.Equal(3m, result.Value);
-        Assert.Equal(WeightUnit.Kilograms, result.WeightUnit);
+        Assert.Equal(WeightUnit.Kilograms, result.Unit);
     }
 
     [Fact]

@@ -5,5 +5,5 @@ namespace TropicalExpress.Infrastructure;
 
 public interface IAppDbContext
 {
-    public DbSet<Fruit> Fruits { get; set; }
+    public DbSet<Order> Orders { get; set; }
 }

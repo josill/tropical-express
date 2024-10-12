@@ -20,36 +20,17 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
     dbContext.Database.EnsureCreated();
 
     // testing area
-    Console.WriteLine("\nTesting Database Operations:");
-
-    // Create and save a new Fruit
-    var netWeight = new Weight(10.5m, WeightUnit.Kilograms);
-    var tareWeight = new Weight(0.5m, WeightUnit.Kilograms);
-    var fruitWeightProfile = new FruitWeightProfile(new NetWeight(netWeight), new TareWeight(tareWeight));
-    var fruit = new Fruit(fruitWeightProfile);
-
-    dbContext.Fruits.Add(fruit);
-    await dbContext.SaveChangesAsync();
-
-    Console.WriteLine("Fruit saved to database.");
-
-    // Retrieve the Fruit
-    var retrievedFruit = await dbContext.Fruits.FirstOrDefaultAsync();
-    if (retrievedFruit != null)
-    {
-        Console.WriteLine("Retrieved Fruit from database:");
-        Console.WriteLine($"Weight Profile: {retrievedFruit.FruitWeightProfile}");
-        Console.WriteLine($"Net Weight: {retrievedFruit.FruitWeightProfile.NetWeight}");
-        Console.WriteLine($"Tare Weight: {retrievedFruit.FruitWeightProfile.TareWeight}");
-        Console.WriteLine($"Gross Weight: {retrievedFruit.FruitWeightProfile.GrossWeight}");
-    }
-    else
-    {
-        Console.WriteLine("No Fruit found in database.");
-    }
+    var netWeight = new Weight(1, WeightUnit.Kilograms);
+    var tareWeight = new Weight(0.2m, WeightUnit.Kilograms);
+    var net = new NetWeight(netWeight);
+    var tare = new TareWeight(tareWeight);
+    var package = new FruitPackaging(tare);
+    var fruit1 = new Fruit(FruitType.Apple, net);
+    var fruit2 = new Fruit(FruitType.Banana, net, package);
 }
 
 

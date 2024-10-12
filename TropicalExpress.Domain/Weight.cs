@@ -9,24 +9,22 @@ namespace TropicalExpress.Domain;
 public class Weight : ValueObject<Weight>
 {
     public readonly decimal Value;
-    public readonly WeightUnit WeightUnit;
-    public readonly DateTime CreatedAt;
+    public readonly WeightUnit Unit;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Weight"/> class.
     /// </summary>
     /// <param name="value">The numeric value of the weight.</param>
-    /// <param name="weightUnit">The unit of measurement for the weight.</param>
+    /// <param name="unit">The unit of measurement for the weight.</param>
     /// <exception cref="MoreThanTwoDecimalPlacesInWeightValueException">Thrown when the value has more than two decimal places.</exception>
     /// <exception cref="WeightCannotBeNegativeException">Thrown when the value is negative.</exception>
     /// <exception cref="WeightCannotBeZeroException">Thrown when the value is zero.</exception>
-    public Weight(decimal value, WeightUnit weightUnit)
+    public Weight(decimal value, WeightUnit unit)
     {
         Validate(value);
 
         Value = value;
-        WeightUnit = weightUnit;
-        CreatedAt = DateTime.UtcNow;
+        Unit = unit;
     }
 
     /// <summary>
@@ -52,7 +50,7 @@ public class Weight : ValueObject<Weight>
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
-        yield return WeightUnit;
+        yield return Unit;
     }
 
     /// <summary>
@@ -83,8 +81,8 @@ public class Weight : ValueObject<Weight>
     /// <returns>A new Weight instance representing the sum.</returns>
     public Weight Add(Weight weight)
     {
-        var convertedWeight = ConvertToUnitWithTwoDecimalPlaces(weight, this.WeightUnit);
-        return new Weight(this.Value + convertedWeight.Value, this.WeightUnit);
+        var convertedWeight = ConvertToUnitWithTwoDecimalPlaces(weight, this.Unit);
+        return new Weight(this.Value + convertedWeight.Value, this.Unit);
     }
 
     /// <summary>
@@ -94,8 +92,8 @@ public class Weight : ValueObject<Weight>
     /// <returns>A new Weight instance representing the difference.</returns>
     public Weight Subtract(Weight weight)
     {
-        var convertedWeight = ConvertToUnitWithTwoDecimalPlaces(weight, this.WeightUnit);
-        return new Weight(this.Value - convertedWeight.Value, this.WeightUnit);
+        var convertedWeight = ConvertToUnitWithTwoDecimalPlaces(weight, this.Unit);
+        return new Weight(this.Value - convertedWeight.Value, this.Unit);
     }
 
     /// <summary>
@@ -140,13 +138,13 @@ public class Weight : ValueObject<Weight>
     /// </exception>
     internal static Weight ConvertToUnitWithTwoDecimalPlaces(Weight weight, WeightUnit targetWeightUnit)
     {
-        if (weight.WeightUnit == targetWeightUnit)
+        if (weight.Unit == targetWeightUnit)
             return weight;
 
         var convertedValue = weight.Value;
 
         // Convert to grams first
-        switch (weight.WeightUnit)
+        switch (weight.Unit)
         {
             case WeightUnit.Kilograms:
                 convertedValue *= 1000;

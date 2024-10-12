@@ -23,8 +23,8 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        var connectionString = Environment.GetEnvironmentVariable("DefaultConnection")
-                               ?? configuration["DefaultConnection"];
+        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+                               ?? configuration.GetConnectionString("DefaultConnection");
 
         if (string.IsNullOrEmpty(connectionString))
         {
@@ -32,7 +32,7 @@ public static class DependencyInjection
         }
 
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString, o =>
+            options.UseNpgsql(connectionString, o =>
             {
                 o.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
             }));
