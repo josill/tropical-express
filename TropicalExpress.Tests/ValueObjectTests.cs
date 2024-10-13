@@ -110,8 +110,8 @@ public class ValueObjectTests
     [Fact]
     public void EqualityOperator_NullObjects_ReturnsTrue()
     {
-        TestValueObject obj1 = null;
-        TestValueObject obj2 = null;
+        TestValueObject? obj1 = null;
+        TestValueObject? obj2 = null;
 
         Assert.True(obj1 == obj2);
     }
@@ -119,7 +119,7 @@ public class ValueObjectTests
     [Fact]
     public void EqualityOperator_OneNullObject_ReturnsFalse()
     {
-        TestValueObject obj1 = null;
+        TestValueObject? obj1 = null;
         var obj2 = new TestValueObject(1, "test");
 
         Assert.False(obj1 == obj2);
@@ -129,8 +129,8 @@ public class ValueObjectTests
     [Fact]
     public void InequalityOperator_NullObjects_ReturnsFalse()
     {
-        TestValueObject obj1 = null;
-        TestValueObject obj2 = null;
+        TestValueObject? obj1 = null;
+        TestValueObject? obj2 = null;
 
         Assert.False(obj1 != obj2);
     }
@@ -138,7 +138,7 @@ public class ValueObjectTests
     [Fact]
     public void InequalityOperator_OneNullObject_ReturnsTrue()
     {
-        TestValueObject obj1 = null;
+        TestValueObject? obj1 = null;
         var obj2 = new TestValueObject(1, "test");
 
         Assert.True(obj1 != obj2);

@@ -23,33 +23,38 @@ namespace TropicalExpress.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("TropicalExpress.Domain.Fruit", b =>
+            modelBuilder.Entity("TropicalExpress.Domain.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.ComplexProperty<Dictionary<string, object>>("NetWeight", "TropicalExpress.Domain.Fruit.NetWeight#NetWeight", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Fruit", "TropicalExpress.Domain.Order.Fruit#Fruit", b1 =>
                         {
                             b1.IsRequired();
 
-                            b1.ComplexProperty<Dictionary<string, object>>("Weight", "TropicalExpress.Domain.Fruit.NetWeight#NetWeight.Weight#Weight", b2 =>
+                            b1.ComplexProperty<Dictionary<string, object>>("NetWeight", "TropicalExpress.Domain.Order.Fruit#Fruit.NetWeight#NetWeight", b2 =>
                                 {
                                     b2.IsRequired();
 
-                                    b2.Property<DateTime>("CreatedAt")
-                                        .HasColumnType("timestamp with time zone");
+                                    b2.ComplexProperty<Dictionary<string, object>>("Weight", "TropicalExpress.Domain.Order.Fruit#Fruit.NetWeight#NetWeight.Weight#Weight", b3 =>
+                                        {
+                                            b3.IsRequired();
 
-                                    b2.Property<decimal>("Value")
-                                        .HasColumnType("numeric");
+                                            b3.Property<string>("Comment")
+                                                .HasColumnType("text");
 
-                                    b2.Property<int>("WeightUnit")
-                                        .HasColumnType("integer");
+                                            b3.Property<int>("Unit")
+                                                .HasColumnType("integer");
+
+                                            b3.Property<decimal>("Value")
+                                                .HasColumnType("numeric");
+                                        });
                                 });
                         });
 
                     b.HasKey("Id");
 
-                    b.ToTable("Fruits");
+                    b.ToTable("Orders");
                 });
 #pragma warning restore 612, 618
         }

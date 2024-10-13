@@ -1,9 +1,5 @@
 ﻿using TropicalExpress.Infrastructure;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using TropicalExpress.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +26,10 @@ using (var scope = app.Services.CreateScope())
     var tare = new TareWeight(tareWeight);
     var package = new FruitPackaging(tare);
     var fruit1 = new Fruit(FruitType.Apple, net);
-    var fruit2 = new Fruit(FruitType.Banana, net, package);
+    var order = new Order(fruit1);
+
+    dbContext.Orders.Add(order);
+    await dbContext.SaveChangesAsync();
 }
 
 

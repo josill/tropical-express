@@ -8,8 +8,25 @@ namespace TropicalExpress.Domain;
 /// </summary>
 public class Weight : ValueObject<Weight>
 {
+    /// <summary>
+    /// Gets the numeric value of the weight.
+    /// </summary>
+    /// <remarks>
+    /// This value is always positive, non-zero, and has no more than two decimal places.
+    /// </remarks>
     public readonly decimal Value;
+
+    /// <summary>
+    /// Gets the unit of measurement for the weight.
+    /// </summary>
     public readonly WeightUnit Unit;
+
+    /// <summary>
+    /// Gets an optional comment associated with this weight measurement.
+    /// </summary>
+    public readonly string? Comment;
+    
+    private Weight() {} // EF Core needs this
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Weight"/> class.
@@ -40,8 +57,6 @@ public class Weight : ValueObject<Weight>
         Guard.Against.Requires<WeightCannotBeNegativeException>(value >= 0);
         Guard.Against.Requires<WeightCannotBeZeroException>(value != 0);
     }
-    
-    // TODO: ToString() and FromString()
     
     /// <summary>
     /// Gets the components used for equality comparison.

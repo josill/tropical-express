@@ -20,8 +20,6 @@ public class NetWeight : ValueObject<NetWeight>
         Weight = weight;
     }
     
-    // TODO: ToString() and FromString()
-
     /// <summary>
     /// Provides the components of this object used for equality comparison.
     /// </summary>
@@ -50,8 +48,6 @@ public class TareWeight : ValueObject<TareWeight>
         Weight = weight;
     }
     
-    // TODO: ToString() and FromString()
-
     /// <summary>
     /// Provides the components of this object used for equality comparison.
     /// </summary>
@@ -80,8 +76,6 @@ public class GrossWeight : ValueObject<GrossWeight>
         Weight = weight;
     }
     
-    // TODO: ToString() and FromString()
-
     /// <summary>
     /// Provides the components of this object used for equality comparison.
     /// </summary>

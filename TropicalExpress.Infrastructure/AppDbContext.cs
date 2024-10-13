@@ -10,66 +10,51 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ConfigureOrderEntity(modelBuilder);
+        
+        base.OnModelCreating(modelBuilder);
+    }
+    
+    /// <summary>
+    /// Configures the Order entity.
+    /// </summary>
+    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
+    private void ConfigureOrderEntity(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Order>(builder =>
         {
-            builder.Property(o => o.Id)
-                .HasConversion(
-                    id => id.Value,
-                    value => new OrderId(value)
-                )
-                .IsRequired();
-
-            builder.OwnsMany(
-                o => o.Fruits,
-                b =>
-                {
-                    b.Property(f => f.FruitType).HasConversion<string>();
-                    // b.Navigation(f => f.FruitPackaging).IsRequired(false);
-                    // b.Navigation(f => f.TareWeight).IsRequired(false);
-
-                    b.OwnsOne(f => f.NetWeight, nwb =>
-                    {
-                        nwb.OwnsOne(nw => nw.Weight, wb =>
-                        {
-                            wb.Property(w => w.Value).HasColumnName("NetWeight");
-                            wb.Property(w => w.Unit).HasColumnName("NetWeightUnit").HasConversion<string>();
-                        });
-                    });
-
-                    b.OwnsOne(f => f.TareWeight, twb =>
-                    {
-                        twb.OwnsOne(gw => gw.Weight, wb =>
-                        {
-                            wb.Property(w => w.Value).HasColumnName("TareWeight");
-                            wb.Property(w => w.Unit).HasColumnName("TareWeightUnit").HasConversion<string>();
-                        });
-                    });
-                    
-                    b.OwnsOne(f => f.GrossWeight, gwb =>
-                    {
-                        gwb.OwnsOne(gw => gw.Weight, wb =>
-                        {
-                            wb.Property(w => w.Value).HasColumnName("GrossWeight");
-                            wb.Property(w => w.Unit).HasColumnName("GrossWeightUnit").HasConversion<string>();
-                        });
-                    });
-
-                    b.OwnsOne(f => f.FruitPackaging, fp =>
-                    {
-                        fp.OwnsOne(p => p.TareWeight, twb =>
-                        {
-                            twb.OwnsOne(tw => tw.Weight, wb =>
-                            {
-                                wb.Property(w => w.Value).HasColumnName("FruitPackagingTareWeight");
-                                wb.Property(w => w.Unit).HasColumnName("FruitPackagingTareWeightUnit")
-                                    .HasConversion<string>();
-                            });
-                        });
-                    });
-                });
+            ConfigureOrderId(builder);
+            ConfigureOrderComplexTypes(builder);
         });
-        
-            base.OnModelCreating(modelBuilder);
-        }
-    
+    }
+
+    /// <summary>
+    /// Configures the Order ID property.
+    /// </summary>
+    /// <param name="builder">The entity type builder for the Order entity.</param>
+    private void ConfigureOrderId(EntityTypeBuilder<Order> builder)
+    {
+        builder.Property(o => o.Id)
+            .HasConversion(
+                id => id.Value,
+                value => new OrderId(value)
+            )
+            .IsRequired();
+    }
+
+    /// <summary>
+    /// Configures the complex types for the Order entity.
+    /// </summary>
+    /// <param name="builder">The entity type builder for the Order entity.</param>
+    private void ConfigureOrderComplexTypes(EntityTypeBuilder<Order> builder)
+    {
+        builder.ComplexProperty(o => o.Fruit, fruitBuilder =>
+        {
+            fruitBuilder.Property(f => f.FruitType).HasConversion<string>();
+            fruitBuilder.ComplexProperty(f => f.NetWeight, netWeightBuilder =>
+            {
+                netWeightBuilder.ComplexProperty(nw => nw.Weight);
+            });
+        });
+    }
 }

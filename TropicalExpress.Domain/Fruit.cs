@@ -14,23 +14,8 @@ public class Fruit : ValueObject<Fruit>
     /// Gets the net weight of the fruit.
     /// </summary>
     public NetWeight NetWeight { get; }
-
-    /// <summary>
-    /// Gets the tare weight of the packaging, if any.
-    /// </summary>
-    public TareWeight? TareWeight { get; }
-
-    /// <summary>
-    /// Gets the gross weight of the fruit, including packaging if any.
-    /// </summary>
-    public GrossWeight GrossWeight { get; }
-
-    /// <summary>
-    /// Gets the packaging of the fruit, if any.
-    /// </summary>
-    public FruitPackaging? FruitPackaging { get; }
     
-    private Fruit() {}
+    private Fruit() {} // EF Core needs this
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Fruit"/> class without packaging.
@@ -41,24 +26,6 @@ public class Fruit : ValueObject<Fruit>
     {
         FruitType = fruitType;
         NetWeight = netWeight;
-        TareWeight = null;
-        FruitPackaging = null;
-        GrossWeight = new GrossWeight(netWeight.Weight);
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Fruit"/> class with packaging.
-    /// </summary>
-    /// <param name="fruitType">The type of fruit.</param>
-    /// <param name="netWeight">The net weight of the fruit.</param>
-    /// <param name="fruitPackaging">The packaging of the fruit.</param>
-    public Fruit(FruitType fruitType, NetWeight netWeight, FruitPackaging fruitPackaging)
-    {
-        FruitType = fruitType;
-        NetWeight = netWeight;
-        FruitPackaging = fruitPackaging;
-        TareWeight = fruitPackaging.TareWeight;
-        GrossWeight = new GrossWeight(netWeight.Weight + TareWeight.Weight);
     }
 
     /// <summary>
@@ -69,7 +36,6 @@ public class Fruit : ValueObject<Fruit>
     {
         yield return FruitType;
         yield return NetWeight;
-        yield return GrossWeight;
     }
 }
 
