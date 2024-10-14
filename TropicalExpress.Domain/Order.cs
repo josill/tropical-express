@@ -7,39 +7,48 @@ namespace TropicalExpress.Domain;
 /// </summary>
 public class Order
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Order"/> class with a new <see cref="OrderId"/>.
-    /// Used by EF Core
-    /// </summary>
-    private Order() { }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Order"/> class with the specified fruit.
-    /// </summary>
-    /// <param name="fruit">The fruit associated with this order.</param>
-    public Order(Fruit fruit)
-    {
-        Fruit = fruit;
-    }
     
     /// <summary>
     /// Gets the unique identifier for this order.
     /// </summary>
     public readonly OrderId Id = new();
-
-    /// <summary>
-    /// Gets the fruit associated with this order.
-    /// </summary>
-    public Fruit Fruit { get; private set; }
     
     /// <summary>
-    /// Updates the fruit associated with this order.
+    /// Gets or sets the list of fruits in this order.
     /// </summary>
-    /// <param name="newFruit">The new fruit to associate with this order.</param>
-    /// <exception cref="ArgumentNullException">Thrown if newFruit is null.</exception>
-    public void UpdateFruit(Fruit newFruit)
+    public readonly List<Fruit> Fruits = [];
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Order"/> class with a new <see cref="OrderId"/>.
+    /// Used by EF Core.
+    /// </summary>
+    public Order() {}
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Order"/> class with the specified fruits.
+    /// </summary>
+    /// <param name="fruits">The initial list of fruits for this order.</param>
+    public Order(List<Fruit> fruits)
     {
-        Fruit = newFruit;
+        Fruits = fruits;
+    }
+    
+    /// <summary>
+    /// Adds a new fruit to the order.
+    /// </summary>
+    /// <param name="fruitToAdd">The fruit to be added to the order.</param>
+    public void AddFruit(Fruit fruitToAdd)
+    {
+        Fruits.Add(fruitToAdd);
+    }
+
+    /// <summary>
+    /// Removes a fruit from the order.
+    /// </summary>
+    /// <param name="fruitToRemove">The fruit to be removed from the order.</param>
+    public void RemoveFruit(Fruit fruitToRemove)
+    {
+        Fruits.Remove(fruitToRemove);
     }
 }
 

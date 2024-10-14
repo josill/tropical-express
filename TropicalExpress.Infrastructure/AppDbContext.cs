@@ -43,17 +43,27 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
     /// <summary>
-    /// Configures the complex types for the Order entity.
+    /// Configures the owned types for the Order entity.
     /// </summary>
     /// <param name="builder">The entity type builder for the Order entity.</param>
-    private void ConfigureOrderComplexTypes(EntityTypeBuilder<Order> builder)
+    public void ConfigureOrderComplexTypes(EntityTypeBuilder<Order> builder)
     {
-        builder.ComplexProperty(o => o.Fruit, fruitBuilder =>
+        builder.OwnsMany(o => o.Fruits, fruitBuilder =>
         {
-            fruitBuilder.Property(f => f.FruitType).HasConversion<string>();
-            fruitBuilder.ComplexProperty(f => f.NetWeight, netWeightBuilder =>
+            fruitBuilder.WithOwner().HasForeignKey("OrderId");
+            fruitBuilder.Property<Guid>("Id");
+            fruitBuilder.HasKey("Id");
+            
+            fruitBuilder.Property(f => f.FruitType).HasConversion<string>().HasColumnName("FruitType");
+
+            fruitBuilder.OwnsOne(f => f.NetWeight, netWeightBuilder =>
             {
-                netWeightBuilder.ComplexProperty(nw => nw.Weight);
+                netWeightBuilder.OwnsOne(p => p.Weight, weightBuilder =>
+                {
+                    weightBuilder.Property(w => w.Value).HasColumnName("NetWeightValue");
+                    weightBuilder.Property(w => w.Unit).HasColumnName("NetWeightUnit");
+                    weightBuilder.Property(w => w.Comment).HasColumnName("NetWeightComment");
+                });
             });
         });
     }

@@ -1,4 +1,6 @@
-﻿namespace TropicalExpress.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace TropicalExpress.Domain;
 
 /// <summary>
 /// Represents a fruit item, which can be packaged or unpackaged.

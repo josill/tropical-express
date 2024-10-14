@@ -21,12 +21,15 @@ using (var scope = app.Services.CreateScope())
 
     // testing area
     var netWeight = new Weight(1, WeightUnit.Kilograms);
-    var tareWeight = new Weight(0.2m, WeightUnit.Kilograms);
+    var netWeight2 = new Weight(1, WeightUnit.Kilograms);
     var net = new NetWeight(netWeight);
-    var tare = new TareWeight(tareWeight);
-    var package = new FruitPackaging(tare);
-    var fruit1 = new Fruit(FruitType.Apple, net);
-    var order = new Order(fruit1);
+    var net2 = new NetWeight(netWeight2);
+    var fruits = new List<Fruit>();
+    var apple = new Fruit(FruitType.Apple, net);
+    var banana = new Fruit(FruitType.Banana, net2);
+    fruits.Add(apple);
+    fruits.Add(banana);
+    var order = new Order(fruits);
 
     dbContext.Orders.Add(order);
     await dbContext.SaveChangesAsync();
