@@ -16,7 +16,7 @@ public class Order
     /// <summary>
     /// Gets or sets the list of fruits in this order.
     /// </summary>
-    public readonly List<Fruit> Fruits = [];
+    public Fruit Fruit { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Order"/> class with a new <see cref="OrderId"/>.
@@ -28,27 +28,19 @@ public class Order
     /// Initializes a new instance of the <see cref="Order"/> class with the specified fruits.
     /// </summary>
     /// <param name="fruits">The initial list of fruits for this order.</param>
-    public Order(List<Fruit> fruits)
+    public Order(Fruit fruit)
     {
-        Fruits = fruits;
+        Fruit = fruit;
     }
     
     /// <summary>
-    /// Adds a new fruit to the order.
+    /// Updates the fruit associated with this order.
     /// </summary>
-    /// <param name="fruitToAdd">The fruit to be added to the order.</param>
-    public void AddFruit(Fruit fruitToAdd)
+    /// <param name="newFruit">The new fruit to associate with this order.</param>
+    /// <exception cref="ArgumentNullException">Thrown if newFruit is null.</exception>
+    public void UpdateFruit(Fruit newFruit)
     {
-        Fruits.Add(fruitToAdd);
-    }
-
-    /// <summary>
-    /// Removes a fruit from the order.
-    /// </summary>
-    /// <param name="fruitToRemove">The fruit to be removed from the order.</param>
-    public void RemoveFruit(Fruit fruitToRemove)
-    {
-        Fruits.Remove(fruitToRemove);
+        Fruit = newFruit;
     }
 }
 

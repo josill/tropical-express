@@ -6,27 +6,21 @@ namespace TropicalExpress.Domain;
 /// Represents the net weight of an object.
 /// </summary>
 /// <param name="weight">The weight value.</param>
-public class NetWeight : ValueObject<NetWeight>
+public class NetWeight : Weight
 {
-    /// <summary>
-    /// Gets the weight value.
-    /// </summary>
-    public  Weight Weight { get; private set; }
+    // private NetWeight() : base() { } // EF Core needs this
     
-    private NetWeight() { } // EF Core needs this
-    
-    public NetWeight(Weight weight)
+    public NetWeight(Weight weight) : base(weight.Value, weight.Unit) {}
+
+    public static string NetWeightToString(NetWeight netWeight)
     {
-        Weight = weight;
+        return $"NetWeight: {Weight.WeightToString(netWeight)}";
     }
     
-    /// <summary>
-    /// Provides the components of this object used for equality comparison.
-    /// </summary>
-    /// <returns>An enumeration of objects used for equality comparison.</returns>
-    protected override IEnumerable<object> GetEqualityComponents()
+    public static NetWeight StringToNetWeight(string netWeight)
     {
-        yield return Weight;
+        var parts = netWeight.Split("NetWeight:");
+        return new NetWeight(Weight.StringToWeight(parts[1].Trim()));
     }
 }
 
@@ -34,27 +28,21 @@ public class NetWeight : ValueObject<NetWeight>
 /// Represents the tare weight of an object (the weight of an empty container).
 /// </summary>
 /// <param name="weight">The weight value.</param>
-public class TareWeight : ValueObject<TareWeight>
+public class TareWeight : Weight
 {
-    /// <summary>
-    /// Gets the weight value.
-    /// </summary>
-    public Weight Weight { get; private set; }
+    // private TareWeight() { } // EF Core needs this
 
-    private TareWeight() { } // EF Core needs this
-
-    public TareWeight(Weight weight)
+    public TareWeight(Weight weight) : base(weight.Value, weight.Unit) {}
+    
+    public static string TareWeightToString(TareWeight tareWeight)
     {
-        Weight = weight;
+        return $"TareWeight: {Weight.WeightToString(tareWeight)}";
     }
     
-    /// <summary>
-    /// Provides the components of this object used for equality comparison.
-    /// </summary>
-    /// <returns>An enumeration of objects used for equality comparison.</returns>
-    protected override IEnumerable<object> GetEqualityComponents()
+    public static TareWeight StringToTareWeight(string tareWeight)
     {
-        yield return Weight;
+        var parts = tareWeight.Split("TareWeight: ");
+        return new TareWeight(Weight.StringToWeight(parts[1].Trim()));
     }
 }
 
@@ -62,26 +50,20 @@ public class TareWeight : ValueObject<TareWeight>
 /// Represents the gross weight of an object (total weight including container).
 /// </summary>
 /// <param name="weight">The weight value.</param>
-public class GrossWeight : ValueObject<GrossWeight>
+public class GrossWeight : Weight
 {
-    /// <summary>
-    /// Gets the weight value.
-    /// </summary>
-    public Weight Weight { get; private set; }
+    // private GrossWeight() { } // EF Core needs this
 
-    private GrossWeight() { } // EF Core needs this
-
-    public GrossWeight(Weight weight)
+    public GrossWeight(Weight weight) : base(weight.Value, weight.Unit) {}
+    
+    public static string GrossWeightToString(GrossWeight grossWeight)
     {
-        Weight = weight;
+        return $"GrossWeight: {Weight.WeightToString(grossWeight)}";
     }
     
-    /// <summary>
-    /// Provides the components of this object used for equality comparison.
-    /// </summary>
-    /// <returns>An enumeration of objects used for equality comparison.</returns>
-    protected override IEnumerable<object> GetEqualityComponents()
+    public static GrossWeight StringToGrossWeight(string grossWeight)
     {
-        yield return Weight;
+        var parts = grossWeight.Split("GrossWeight: ");
+        return new GrossWeight(Weight.StringToWeight(parts[1].Trim()));
     }
 }

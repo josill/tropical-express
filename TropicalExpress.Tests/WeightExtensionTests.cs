@@ -8,35 +8,35 @@ public class WeightExtensionTests
     [Fact]
     public void NetWeight_Creation_SetsWeightCorrectly()
     {
-        var weight = new Weight(10, WeightUnit.Kilograms);
+        var weight = new Weight(10, WeightUnit.Kg);
         var netWeight = new NetWeight(weight);
 
-        Assert.Equal(weight, netWeight.Weight);
+        Assert.Equal(weight, netWeight);
     }
 
     [Fact]
     public void TareWeight_Creation_SetsWeightCorrectly()
     {
-        var weight = new Weight(5, WeightUnit.Pounds);
+        var weight = new Weight(5, WeightUnit.Lb);
         var tareWeight = new TareWeight(weight);
 
-        Assert.Equal(weight, tareWeight.Weight);
+        Assert.Equal(weight, tareWeight);
     }
 
     [Fact]
     public void GrossWeight_Creation_SetsWeightCorrectly()
     {
-        var weight = new Weight(1000, WeightUnit.Grams);
+        var weight = new Weight(1000, WeightUnit.G);
         var grossWeight = new GrossWeight(weight);
 
-        Assert.Equal(weight, grossWeight.Weight);
+        Assert.Equal(weight, grossWeight);
     }
 
     [Fact]
     public void NetWeight_EqualityComparison_ReturnsTrue_ForEqualWeights()
     {
-        var weight1 = new Weight(10, WeightUnit.Kilograms);
-        var weight2 = new Weight(10, WeightUnit.Kilograms);
+        var weight1 = new Weight(10, WeightUnit.Kg);
+        var weight2 = new Weight(10, WeightUnit.Kg);
         var netWeight1 = new NetWeight(weight1);
         var netWeight2 = new NetWeight(weight2);
 
@@ -48,8 +48,8 @@ public class WeightExtensionTests
     [Fact]
     public void TareWeight_EqualityComparison_ReturnsFalse_ForDifferentWeights()
     {
-        var weight1 = new Weight(5, WeightUnit.Pounds);
-        var weight2 = new Weight(6, WeightUnit.Pounds);
+        var weight1 = new Weight(5, WeightUnit.Lb);
+        var weight2 = new Weight(6, WeightUnit.Lb);
         var tareWeight1 = new TareWeight(weight1);
         var tareWeight2 = new TareWeight(weight2);
 
@@ -61,7 +61,7 @@ public class WeightExtensionTests
     [Fact]
     public void TareWeight_GetHashCode_ReturnsConsistentValue()
     {
-        var weight = new Weight(5, WeightUnit.Pounds);
+        var weight = new Weight(5, WeightUnit.Lb);
         var tareWeight1 = new TareWeight(weight);
         var tareWeight2 = new TareWeight(weight);
 
@@ -71,8 +71,8 @@ public class WeightExtensionTests
     [Fact]
     public void GrossWeight_GetHashCode_ReturnsDifferentValues_ForDifferentWeights()
     {
-        var weight1 = new Weight(1000, WeightUnit.Grams);
-        var weight2 = new Weight(2000, WeightUnit.Grams);
+        var weight1 = new Weight(1000, WeightUnit.G);
+        var weight2 = new Weight(2000, WeightUnit.G);
         var grossWeight1 = new GrossWeight(weight1);
         var grossWeight2 = new GrossWeight(weight2);
 

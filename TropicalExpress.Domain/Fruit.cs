@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace TropicalExpress.Domain;
+﻿namespace TropicalExpress.Domain;
 
 /// <summary>
-/// Represents a fruit item, which can be packaged or unpackaged.
+/// Represents a fruit item
 /// </summary>
 public class Fruit : ValueObject<Fruit>
 {
@@ -13,21 +11,21 @@ public class Fruit : ValueObject<Fruit>
     public FruitType FruitType { get; }
 
     /// <summary>
-    /// Gets the net weight of the fruit.
+    /// Gets the weight data of the fruit.
     /// </summary>
-    public NetWeight NetWeight { get; }
-    
+    public WeightData WeightData { get; }
+
     private Fruit() {} // EF Core needs this
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Fruit"/> class without packaging.
     /// </summary>
     /// <param name="fruitType">The type of fruit.</param>
-    /// <param name="netWeight">The net weight of the fruit.</param>
-    public Fruit(FruitType fruitType, NetWeight netWeight)
+    /// <param name="weightData">The net weight of the fruit.</param>
+    public Fruit(FruitType fruitType, WeightData weightData)
     {
         FruitType = fruitType;
-        NetWeight = netWeight;
+        WeightData = weightData;
     }
 
     /// <summary>
@@ -37,7 +35,7 @@ public class Fruit : ValueObject<Fruit>
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return FruitType;
-        yield return NetWeight;
+        yield return WeightData;
     }
 }
 

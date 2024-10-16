@@ -14,18 +14,13 @@ public class Weight : ValueObject<Weight>
     /// <remarks>
     /// This value is always positive, non-zero, and has no more than two decimal places.
     /// </remarks>
-    public readonly decimal Value;
+    public decimal Value { get; }
 
     /// <summary>
     /// Gets the unit of measurement for the weight.
     /// </summary>
-    public readonly WeightUnit Unit;
+    public WeightUnit Unit { get; }
 
-    /// <summary>
-    /// Gets an optional comment associated with this weight measurement.
-    /// </summary>
-    public readonly string? Comment;
-    
     private Weight() {} // EF Core needs this
 
     /// <summary>
@@ -50,12 +45,10 @@ public class Weight : ValueObject<Weight>
     /// <param name="value">The value to validate.</param>
     /// <exception cref="MoreThanTwoDecimalPlacesInWeightValueException">Thrown when the value has more than two decimal places.</exception>
     /// <exception cref="WeightCannotBeNegativeException">Thrown when the value is negative.</exception>
-    /// <exception cref="WeightCannotBeZeroException">Thrown when the value is zero.</exception>
     private static void Validate(decimal value)
     {
         Guard.Against.Requires<MoreThanTwoDecimalPlacesInWeightValueException>(value % 0.01m == 0);
         Guard.Against.Requires<WeightCannotBeNegativeException>(value >= 0);
-        Guard.Against.Requires<WeightCannotBeZeroException>(value != 0);
     }
     
     /// <summary>
@@ -73,21 +66,21 @@ public class Weight : ValueObject<Weight>
     /// </summary>
     /// <param name="value">The weight value in grams.</param>
     /// <returns>A new Weight instance.</returns>
-    public static Weight FromGrams(decimal value) => new Weight(value, WeightUnit.Grams); 
+    public static Weight FromGrams(decimal value) => new Weight(value, WeightUnit.G); 
     
     /// <summary>
     /// Creates a new Weight instance with the specified value in kilograms.
     /// </summary>
     /// <param name="value">The weight value in kilograms.</param>
     /// <returns>A new Weight instance.</returns>
-    public static Weight FromKilograms(decimal value) => new Weight(value, WeightUnit.Kilograms); 
+    public static Weight FromKilograms(decimal value) => new Weight(value, WeightUnit.Kg); 
     
     /// <summary>
     /// Creates a new Weight instance with the specified value in pounds.
     /// </summary>
     /// <param name="value">The weight value in pounds.</param>
     /// <returns>A new Weight instance.</returns>
-    public static Weight FromPounds(decimal value) => new Weight(value, WeightUnit.Pounds); 
+    public static Weight FromPounds(decimal value) => new Weight(value, WeightUnit.Lb); 
 
     /// <summary>
     /// Adds another Weight to this Weight.
@@ -161,10 +154,10 @@ public class Weight : ValueObject<Weight>
         // Convert to grams first
         switch (weight.Unit)
         {
-            case WeightUnit.Kilograms:
+            case WeightUnit.Kg:
                 convertedValue *= 1000;
                 break;
-            case WeightUnit.Pounds:
+            case WeightUnit.Lb:
                 convertedValue *= 453.592m;
                 break;
         }
@@ -172,10 +165,10 @@ public class Weight : ValueObject<Weight>
         // Then convert to target unit
         switch (targetWeightUnit)
         {
-            case WeightUnit.Kilograms:
+            case WeightUnit.Kg:
                 convertedValue /= 1000;
                 break;
-            case WeightUnit.Pounds:
+            case WeightUnit.Lb:
                 convertedValue /= 453.592m;
                 break;
         }
@@ -184,6 +177,16 @@ public class Weight : ValueObject<Weight>
         convertedValue = Math.Round(convertedValue, 2, MidpointRounding.AwayFromZero);
 
         return new Weight(convertedValue, targetWeightUnit);
+    }
+
+    public static string WeightToString(Weight weight)
+    {
+        return $"{weight.Value} {weight.Unit}";
+    }
+
+    public static Weight StringToWeight(string weight)  {
+        var parts = weight.Trim().Split(' ');
+        return new Weight(decimal.Parse(parts[0]), Enum.Parse<WeightUnit>(parts[1]));
     }
 }
 
@@ -195,17 +198,17 @@ public enum WeightUnit
     /// <summary>
     /// Weight in grams.
     /// </summary>
-    Grams,
+    G,
 
     /// <summary>
     /// Weight in kilograms.
     /// </summary>
-    Kilograms,
+    Kg,
 
     /// <summary>
     /// Weight in pounds.
     /// </summary>
-    Pounds
+    Lb
 }
 
 /// <summary>
@@ -218,8 +221,3 @@ public class MoreThanTwoDecimalPlacesInWeightValueException()
 /// Exception thrown when a weight value is negative.
 /// </summary>
 public class WeightCannotBeNegativeException() : Exception("Weight cannot be a negative value.");
-
-/// <summary>
-/// Exception thrown when a weight value is zero.
-/// </summary>
-public class WeightCannotBeZeroException() : Exception("Weight cannot be zero.");
